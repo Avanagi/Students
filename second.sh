@@ -20,8 +20,26 @@ if [ ! -e "$filePath" ]; then
 fi
 
 # студент и количество посещенных им занятий
-students=$(cat "$filePath")
+source=$(cat "$filePath")
+# список студентов 
+listStudents=""
+maxCount=-1
+while IFS= read -r line; do
+    # поиск количества посещенных занятий
+    count=$(echo "$line" | grep -o + | wc -l)
+    # удаляем из строки подстроку с посещаемостью
+    name=$(echo "$line" | sed -E 's/^(.*) [_+]*$/\1 /')
+    # создаем новую строку с именем и количеством посещений 
+    listStudents+="$name"
+    listStudents+="$count"
+    listStudents+=$'\n'
+    # провеяем, является ли количество посещений максимальным 
+    if (( count > maxCount )); then
+        maxCount=$count
+    fi
+done <<< "$source"
 
-for student in $students; do
-    echo "$student"
-done
+# оставляем строки в которых содержится максимальное количество посещений
+result=$(echo "$listStudents" | grep "$maxCount" )
+# выводим результат 
+echo "$result"
