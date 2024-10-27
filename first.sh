@@ -14,12 +14,9 @@ folderDir=$4
 #путь до файла с тестом
 testFile="$folderDir"/"$subjectName"/tests/TEST-"$testNum"
 # проверяю наличие файла теста
-if [ -f "$testFile" ]; then
-    echo "File exists" >>log.txt
-
-else
+if [ ! -e "$testFile" ]; then
     echo "Can't find test file"
-    exit
+    exit 1
 fi
 
 # список людей данной группы
