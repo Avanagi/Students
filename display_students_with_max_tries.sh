@@ -4,43 +4,49 @@
 #  По всем тестам заданного предмета, суммарное количество правильных
 # ответов из предпоследней колонки файла с тестом, только для положительных оценок.
 
-# имя предмета
-subject=$1
 
-# путь до папки с файловой системой
+# Получаем аргументы: название предмета и директорию
+subject=$1
 dir=$2
 
-# путь до папки с тестами
-testsDir="$dir"/"$subject"/tests
+# Формируем путь к файлам тестов
+testPath="$dir/$subject/tests"
 
-if [ ! -d "$testsDir" ]; then
-    echo "Не удается найти указанный предмет"
-    exit 1
-fi
+declare -A scores  # Ассоциативный массив для хранения суммарных баллов для каждого студента
 
-allResults=""
-
-for item in "$testsDir"/*; do
-    allResults+=$(grep '^.*[3-5]$' "$item" | sed -E 's/^[^,]*,([^,]*),[^,]*,([0-9]{1,2}),[0-9]{1,2}$/\1,\2/')
+# Обрабатываем все файлы в папке testPath
+for file in "$testPath"/*; do
+    # Проверяем, что файл существует и не является пустым
+    if [[ -f "$file" && -s "$file" ]]; then
+        awk -F',' '
+            $5 > 3 {scores[$2] += $4}  # Суммируем баллы, если оценка больше 3
+            END {
+                for (student in scores) {
+                    print student, scores[student]  # Выводим результаты для каждого студента
+                }
+            }
+        ' "$file" >> temp_scores.txt
+    fi
 done
 
-echo "$allResults" | sort >text.txt
+# Заполняем массив scores из временного файла temp_scores.txt
+while read student score; do
+    (( scores[$student] += score ))
+done < temp_scores.txt
 
-# # максимальное количество ответов за все тесты
-# maxAnsversCount=0
+# Удаляем временный файл
+rm temp_scores.txt
 
-# # текущее количество ответов для одного ученика
-# curAnsCount=0
-# # имя текущего студента
-# curStud=""
-# # строка учика с самым большим общим баллом
-# maxStudent=""
+# Находим студента с максимальным суммарным баллом
+max_score=0
+top_student=""
 
-# # предидущее имя ученика
-# previusName=""
-# for item in $allResults; do
-#     curStud=
-#     if [$]; then
-#         command ...
-#     fi
-# done
+for student in "${!scores[@]}"; do
+    if (( scores[$student] > max_score )); then
+        max_score=${scores[$student]}
+        top_student=$student
+    fi
+done
+
+# Выводим результат
+echo "$top_student" "$max_score"
