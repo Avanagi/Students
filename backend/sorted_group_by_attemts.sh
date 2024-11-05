@@ -27,4 +27,5 @@ uniqList=$(echo "$filtered" | uniq -c | sort -r -n)
 
 # пронумировал строки и поставил количество попыток сдачи теста в конец
 final=$(echo "$uniqList" | sed -E 's/^.*([0-9]{1,2}) (.*)$/\2 \1/' | nl)
+
 echo "$final"
