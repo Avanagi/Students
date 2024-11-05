@@ -5,14 +5,14 @@
 #группа должна быть указана в формате A-06-21
 group=$1
 #просто номер теста от 1 до 4
-testNum=$2
+test=$2
 # имя предмета
 subjectName=$3
 # директория в которой хранятся данные по предметам
 folderDir=$4
 
 #путь до файла с тестом
-testFile="$folderDir"/"$subjectName"/tests/TEST-"$testNum"
+testFile="$folderDir"/"$subjectName"/tests/"$test"
 # проверяю наличие файла теста
 if [ ! -e "$testFile" ]; then
     echo "Can't find test file"
