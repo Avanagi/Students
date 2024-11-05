@@ -38,14 +38,13 @@ selectedTest=$(dialog --title "Выберите тест" --menu "Выберит
 check_cancel
 
 test="${testFolders[$selectedTest - 1]}"
-echo $testNumber >test.log
 
 # указать группу
 
 while true; do
 
     group=$(dialog --title "Ввод группы" \
-        --inputbox "Введите номер группы (Формата: A-06-21):" \
+        --inputbox "Введите номер группы (Формат: A-06-21):" \
         $HEIGHT $WIDTH \
         3>&1 1>&2 2>&3)
 

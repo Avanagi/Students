@@ -19,6 +19,12 @@ if [ ! -e "$testFile" ]; then
     exit 1
 fi
 
+count=$(grep -c "$group" "$testFile")
+if [[ $count -eq 0 ]]; then
+    echo "Ошибка: Ученики указанной группы не сдавали тест."
+    exit 1
+fi
+
 # список людей данной группы
 filtered=$(grep "$group" "$testFile" | sed -E 's/^[^,]{4},([^,]*),[^,]*,([0-9]{1,2}),[2-5]$/\1/')
 

@@ -24,7 +24,7 @@ while [ ! "$choice" = $EXIT_CONST ]; do
         --no-cancel \
         --menu "Выберите действие:" $HEIGHT $WIDTH 4 \
         1 "Показать группу отсортированную по попыткам сдачи теста" \
-        2 "Показать время" \
+        2 "Показать учеников с лучшей посещаемостью в группе" \
         3 "Показать календарь" \
         4 "Выход" 3>&1 1>&2 2>&3)
     
@@ -34,7 +34,7 @@ while [ ! "$choice" = $EXIT_CONST ]; do
             "$SCRIPTPATH"/frontend/first.sh "$SCRIPTPATH" $HEIGHT $WIDTH /home/ivan/os/os-labs/labs-2024/lab3/labfiles
             ;;
         2)  
-            
+            "$SCRIPTPATH"/frontend/best_attidance.sh "$SCRIPTPATH" $HEIGHT $WIDTH /home/ivan/os/os-labs/labs-2024/lab3/labfiles
             ;;
         3)
             
