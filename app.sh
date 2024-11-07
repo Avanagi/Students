@@ -9,8 +9,8 @@ if ! command -v dialog &>/dev/null; then
 fi
 
 HEIGHT=15
-WIDTH=80
-EXIT_CONST=5
+WIDTH=85
+EXIT_CONST=6
 
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
@@ -24,7 +24,8 @@ while [ ! "$choice" = $EXIT_CONST ]; do
         2 "Показать учеников с лучшей посещаемостью в группе" \
         3 "Показать досье студента" \
         4 "Редактировать досье студента" \
-        5 "Выход" 3>&1 1>&2 2>&3)
+        5 "Показать студентов, давших наибольшее общее количество правильных ответов" \
+        6 "Выход" 3>&1 1>&2 2>&3)
 
     case "$choice" in
     1)
@@ -38,6 +39,9 @@ while [ ! "$choice" = $EXIT_CONST ]; do
         ;;
     4)
         "$SCRIPTPATH"/frontend/edit_dossier.sh "$SCRIPTPATH" $HEIGHT $WIDTH /home/ivan/os/os-labs/labs-2024/lab3/labfiles
+        ;;
+    5)
+        "$SCRIPTPATH"/frontend/max_tries.sh "$SCRIPTPATH" $HEIGHT $WIDTH /home/ivan/os/os-labs/labs-2024/lab3/labfiles
         ;;
     esac
 done
