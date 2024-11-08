@@ -1,11 +1,9 @@
 #!/bin/bash
 
-
 appPath=$1
 HEIGHT=$2
 WIDTH=$3
 filePath=$4
-
 
 check_cancel() {
     local exit_status=$?
@@ -21,7 +19,7 @@ subjectOptions=()
 for i in "${!foldersSubject[@]}"; do
     subjectOptions+=($(($i + 1)) "${foldersSubject[$i]}")
 done
-selectedSubjectFolder=$(dialog --title "Выберите предмет" --menu "Выберите предмет:" $HEIGHT $WIDTH 0 "${subjectOptions[@]}" 2>&1 >/dev/tty)
+selectedSubjectFolder=$(dialog --title "Выберите предмет" --menu "Выберите предмет:" "$HEIGHT" "$WIDTH" 0 "${subjectOptions[@]}" 2>&1 >/dev/tty)
 check_cancel
 subject="${foldersSubject[$selectedSubjectFolder - 1]}"
 
@@ -34,13 +32,27 @@ for i in "${!groupsFiles[@]}"; do
     groupOptions+=($(($i + 1)) "${groupsFiles[$i]}")
 done
 
-selectedGroup=$(dialog --title "Выберите группу" --menu "Выберите группу:" $HEIGHT $WIDTH 0 "${groupOptions[@]}" 2>&1 >/dev/tty)
-check_cancel
-group="${groupsFiles[$selectedGroup - 1]}"
-    
-echo "$group" "$subject" > test.log
+while true; do
 
-result=$("$appPath"/backend/show_best_attendance.sh "$group" "$subject" "$filePath")
+    selectedGroup=$(dialog --title "Выберите группу" --menu "Выберите группу:" "$HEIGHT" "$WIDTH" 0 "${groupOptions[@]}" 2>&1 >/dev/tty)
+    check_cancel
+    group="${groupsFiles[$selectedGroup - 1]}"
 
-dialog --title "Результат" \
-    --msgbox "$result" $HEIGHT $WIDTH
+    result=$("$appPath"/backend/show_best_attendance.sh "$group" "$subject" "$filePath")
+
+    dialog --title "Результат" \
+        --ok-label "Повторить" \
+        --extra-button --extra-label "В меню" \
+        --msgbox "$result" "$HEIGHT" "$WIDTH"
+
+    response=$?
+    case $response in
+    0)
+        continue
+        ;;
+    3)
+        exit
+        ;;
+
+    esac
+done
