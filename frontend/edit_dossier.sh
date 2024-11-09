@@ -56,7 +56,7 @@ while true; do
         check_cancel
 
         # удаление специальных симоволов
-        cleanedNewDossier=$(echo "$newDossier" | sed -E 's,\\t|\\r|\\n,,g')
+        cleanedNewDossier=$(echo "$newDossier" | sed -E 's/[^[:alnum:][:space:].,:;!?]//g')
 
         "$appPath"/backend/edit_dossier.sh "$studentName" "$cleanedNewDossier" "$filePath"
 
