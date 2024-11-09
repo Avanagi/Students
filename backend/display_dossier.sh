@@ -9,7 +9,9 @@ studentName=$1
 dir=$2
 
 # формирование пути
-filePath="$dir"/"students"/"general"/"notes"/"${studentName:0:1}Names.log"
+
+fistLatter=$(echo "${studentName:0:1}" | tr '[:lower:]' '[:upper:]')
+filePath="$dir"/"students"/"general"/"notes"/"${fistLatter}Names.log"
 
 # проверка существования файла
 if [ ! -f "$filePath" ]; then
@@ -18,7 +20,7 @@ if [ ! -f "$filePath" ]; then
 fi
 
 # подсчет количества совпадений в файле
-countNames=$(grep -c "$studentName" "$filePath")
+countNames=$(grep -i -c "$studentName" "$filePath")
 
 # проверяем совпадение в имени в файле
 if [ "$countNames" = 0 ]; then
@@ -33,8 +35,8 @@ if [ ! "$countNames" = 1 ]; then
 fi
 
 # поиск строки над совпадением
-strBeforeName=$(grep -i -B 1 "$studentName" "$filePath" | head -n 1)
-studentFullName=$(grep -i "$studentName" "$filePath")
+strBeforeName=$(grep -i -i -B 1 "$studentName" "$filePath" | head -n 1)
+studentFullName=$(grep -i -i "$studentName" "$filePath")
 # проверка того, что совпадение нашлось в имени, а не в досье
 if [[ "$strBeforeName" != *"==="* ]]; then
     echo "Совпадение найдено не в имени, уточните свой запрос"
@@ -42,7 +44,7 @@ if [[ "$strBeforeName" != *"==="* ]]; then
 fi
 
 # поиск строки с досье
-dossier=$(grep -i -A 1 "$studentName" "$filePath" | tail -n 1)
+dossier=$(grep -i -i -A 1 "$studentName" "$filePath" | tail -n 1)
 
 # вывод досье и имени студента
 echo "dossier: $dossier"

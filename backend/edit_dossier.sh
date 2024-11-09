@@ -13,7 +13,8 @@ textToAdd=$2
 dir=$3
 
 # формирование пути
-filePath="$dir"/"students"/"general"/"notes"/"${studentName:0:1}Names.log"
+fistLatter=$(echo "${studentName:0:1}" | tr '[:lower:]' '[:upper:]')
+filePath="$dir"/"students"/"general"/"notes"/"${fistLatter}Names.log"
 
 # проверка существования файла
 if [ ! -f "$filePath" ]; then
