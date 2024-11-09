@@ -21,34 +21,38 @@ fi
 
 # подсчет количества совпадений в файле
 {
-    read -r line1
+    read -r count
     read -r studentFullName
     read -r dossier
 } < <(awk -v search="$studentName" '
+    BEGIN { count = 0 }
     /===/ { p=NR+1 }
     (NR==p && tolower($0) ~ tolower(search)) { 
-        print prev    # строка с ===
-        print         # строка с именем
+        count++
+        last_name=$0
         getline
-        print         # следующая строка
+        last_dossier=$0
     }
-    { prev=$0 }
+    END { 
+        print count
+        if (count == 1) {
+            print last_name
+            print last_dossier
+        }
+    }
 ' "$filePath")
-
-
-echo $studentFullName > test.log    
 # проверяем совпадение в имени в файле
-if [ -z "$studentFullName" ]; then
+if [ $count -eq 0 ]; then
     echo "Не найдено совпадений в документе"
     exit 1
 fi
 
 # проверяем, что совпадение только одно
-if [ "$(echo "$studentFullName" | wc -l)" -gt 1 ]; then
-    echo "Не найдено совпадений в документе"
+if [ $count -gt 1 ]; then
+    echo "Больше одного совпадения, уточните свой запрос"
     exit 1
 fi
 
 # вывод досье и имени студента
 echo "dossier: $dossier"
-echo "studentName: $studentName"
+echo "studentName: $studentFullName"
