@@ -37,7 +37,7 @@ while true; do
         continue
     fi
 
-    oldDossier=$("$appPath"/backend/display_dossier.sh "$studentName" "$filePath")
+    result=$("$appPath"/backend/display_dossier.sh "$studentName" "$filePath")
 
     case $? in
     1)
@@ -46,22 +46,25 @@ while true; do
             "$HEIGHT" "$WIDTH"
         ;;
     0)
-        # TODO: добавить вывод первоначального досье
-        newDossier=$(
-            dialog --title "Дополните досье" \
-                --inputbox "Введите данные, которые будут добавлены в конец досье ученика:" \
-                "$HEIGHT" "$WIDTH" \
-                3>&1 1>&2 2>&3
-        )
+        studentFullName=$(echo "$result" | grep "^studentName:" | sed -E 's/^studentName: (.*)$/\1/')
+        oldDossier=$(echo "$result" | grep "^dossier:" | sed -E 's/^dossier: (.*)$/\1/')
+
+        newDossier=$(dialog --title "Дополните досье" \
+            --inputbox "Досье ученика $studentFullName:\n\n$oldDossier\n\nВведите текст, который хотите добавить:" \
+            "$HEIGHT" "$WIDTH" \
+            3>&1 1>&2 2>&3)
+        check_cancel
+
         # удаление специальных симоволов
         cleanedNewDossier=$(echo "$newDossier" | sed -E 's,\\t|\\r|\\n,,g')
 
         "$appPath"/backend/edit_dossier.sh "$studentName" "$cleanedNewDossier" "$filePath"
 
         # вывод обновленного досье
-        updatedDossier=$("$appPath"/backend/display_dossier.sh "$studentName" "$filePath")
+        result=$("$appPath"/backend/display_dossier.sh "$studentName" "$filePath")
+        updatedDossier=$(echo "$result" | grep "^dossier:" | sed -E 's/^dossier: (.*)$/\1/')
 
-        dialog --title "Обновленное досье" \
+        dialog --title "Обновленное досье студента $studentFullName" \
             --msgbox "$updatedDossier" \
             "$HEIGHT" "$WIDTH"
         exit

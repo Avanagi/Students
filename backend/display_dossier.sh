@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# вывод по фамилии студента его досье; 
+# вывод по фамилии студента его досье;
 # возможность добавления новых фраз в досье;
 
 # фио студента(возможен поиск по частичной фамилии)
@@ -8,17 +8,17 @@ studentName=$1
 # директория до файловой системы
 dir=$2
 
-# формирование пути 
+# формирование пути
 filePath="$dir"/"students"/"general"/"notes"/"${studentName:0:1}Names.log"
 
-# проверка существования файла 
+# проверка существования файла
 if [ ! -f "$filePath" ]; then
     echo "Неверно указаны параметры, не удается найти файл с досье"
     exit 1
 fi
 
 # подсчет количества совпадений в файле
-countNames=$(grep -c "$studentName" "$filePath" )
+countNames=$(grep -c "$studentName" "$filePath")
 
 # проверяем совпадение в имени в файле
 if [ "$countNames" = 0 ]; then
@@ -33,17 +33,17 @@ if [ ! "$countNames" = 1 ]; then
 fi
 
 # поиск строки над совпадением
-strBeforeName=$(grep -B 1 "$studentName" "$filePath" | head -n 1)
-
+strBeforeName=$(grep -i -B 1 "$studentName" "$filePath" | head -n 1)
+studentFullName=$(grep -i "$studentName" "$filePath")
 # проверка того, что совпадение нашлось в имени, а не в досье
 if [[ "$strBeforeName" != *"==="* ]]; then
     echo "Совпадение найдено не в имени, уточните свой запрос"
     exit 1
 fi
 
+# поиск строки с досье
+dossier=$(grep -i -A 1 "$studentName" "$filePath" | tail -n 1)
 
-# поиск строки с досье 
-dossier=$(grep -A 1 "$studentName" "$filePath" | tail -n 1)
-
-# вывод досье
-echo "$dossier" 
+# вывод досье и имени студента
+echo "dossier: $dossier"
+echo "studentName: $studentFullName"

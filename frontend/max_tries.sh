@@ -20,7 +20,7 @@ for i in "${!foldersSubject[@]}"; do
     subjectOptions+=($(($i + 1)) "${foldersSubject[$i]}")
 done
 
-selectedSubjectFolder=$(dialog --title "Выберите предмет" --menu "Выберите предмет:" $HEIGHT $WIDTH 0 "${subjectOptions[@]}" 2>&1 >/dev/tty)
+selectedSubjectFolder=$(dialog --title "Выберите предмет" --menu "Выберите предмет:" "$HEIGHT" "$WIDTH" 0 "${subjectOptions[@]}" 2>&1 >/dev/tty)
 check_cancel
 subject="${foldersSubject[$selectedSubjectFolder - 1]}"
 

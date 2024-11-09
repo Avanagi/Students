@@ -34,11 +34,10 @@ while true; do
         dialog --title "Ошибка" \
             --msgbox "Введите фамилию без пробелов" \
             "$HEIGHT" "$WIDTH"
-            continue
+        continue
     fi
 
     result=$("$appPath"/backend/display_dossier.sh "$studentDossier" "$filePath")
-
     case $? in
     1)
         dialog --title "Ошибка" \
@@ -46,9 +45,11 @@ while true; do
             "$HEIGHT" "$WIDTH"
         ;;
     0)
-        dialog --title "Досье ученика $studentDossier" \
-            --msgbox "$result" "$HEIGHT" "$WIDTH"
-            exit
+        studentFullName=$(echo "$result" | grep "^studentName:" | sed -E 's/^studentName: (.*)$/\1/')
+        dossier=$(echo "$result" | grep "^dossier:" | sed -E 's/^dossier: (.*)$/\1/')
+        dialog --title "Досье ученика $studentFullName" \
+            --msgbox "$dossier" "$HEIGHT" "$WIDTH"
+        exit
         ;;
     esac
 
