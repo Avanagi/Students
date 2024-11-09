@@ -42,4 +42,9 @@ done <<< "$source"
 # оставляем строки в которых содержится максимальное количество посещений
 result=$(echo "$listStudents" | grep "$maxCount" )
 # выводим результат 
+
+if [[ $result -eq 0 ]]; then
+    result="Студенты отсутствуют"
+fi
+
 echo "$result"

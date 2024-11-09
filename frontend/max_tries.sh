@@ -37,12 +37,21 @@ year="${yearsInTest[$selectedYear - 1]}"
 
 result=$("$appPath"/backend/display_students_with_max_tries.sh "$subject" "$year" "$filePath")
 
-resultStringCount=$(echo "$result" | wc -l)
+case $? in
+1)
+    dialog --title "Ошибка" \
+        --msgbox "$result" \
+        "$HEIGHT" "$WIDTH"
 
-if [[ $resultStringCount -eq 1 ]]; then
-    dialog --title "Студент давший наибольшее общее количество правильных ответов" \
-        --msgbox "\n$result" "$HEIGHT" "$WIDTH"
-else
-    dialog --title "Студенты давшие наибольшее общее количество правильных ответов" \
-        --msgbox "\n$result" "$HEIGHT" "$WIDTH"
-fi
+    ;;
+0)
+    resultStringCount=$(echo "$result" | wc -l)
+    if [[ $resultStringCount -eq 1 ]]; then
+        dialog --title "Студент давший наибольшее общее количество правильных ответов" \
+            --msgbox "\n$result" "$HEIGHT" "$WIDTH"
+    else
+        dialog --title "Студенты давшие наибольшее общее количество правильных ответов" \
+            --msgbox "\n$result" "$HEIGHT" "$WIDTH"
+    fi
+    ;;
+esac

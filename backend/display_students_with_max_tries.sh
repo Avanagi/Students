@@ -50,6 +50,11 @@ for student in "${!scores[@]}"; do
     fi
 done
 # 2007,PashkovskyA,A-06-04,17,3
+
+if [[ -z $top_student ]]; then
+    echo "Студенты отсутствуют"
+    exit 1
+fi
 studentGroup=$(cat  "$testPath"/* | grep "$top_student"| sed -E 's/^[^,]*,[^,]*,([^,]*),[^,]*,[^,]*$/\1/' | uniq) 
 
 # Выводим результат

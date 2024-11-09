@@ -50,8 +50,13 @@ while true; do
         studentFullName=$(echo "$result" | grep "^studentName:" | sed -E 's/^studentName: (.*)$/\1/')
         oldDossier=$(echo "$result" | grep "^dossier:" | sed -E 's/^dossier: (.*)$/\1/')
 
+        dialog --title "Досье студента $studentFullName" \
+            --ok-label "Далее" \
+            --msgbox "$oldDossier" \
+            "$HEIGHT" "$WIDTH"
+
         newDossier=$(dialog --title "Дополните досье" \
-            --inputbox "Досье ученика $studentFullName:\n\n$oldDossier\n\nВведите текст, который хотите добавить:" \
+            --inputbox "Введите текст, который хотите добавить:" \
             "$HEIGHT" "$WIDTH" \
             3>&1 1>&2 2>&3)
         check_cancel
