@@ -24,14 +24,25 @@ selectedSubjectFolder=$(dialog --title "Выберите предмет" --menu 
 check_cancel
 subject="${foldersSubject[$selectedSubjectFolder - 1]}"
 
-result=$("$appPath"/backend/display_students_with_max_tries.sh "$subject" "$filePath")
+testPath="$filePath"'/'"$subject"'/'"tests"
+yearsInTest=($(awk -F',' '{print $1}' "$testPath"/* | sort -u))
+yearsOptions=()
+for i in "${!yearsInTest[@]}"; do
+    yearsOptions+=($(($i + 1)) "${yearsInTest[$i]}")
+done
+
+selectedYear=$(dialog --title "Выберите год" --menu "Выберите год сдачи теста" "$HEIGHT" "$WIDTH" 0 "${yearsOptions[@]}" 2>&1 >/dev/tty)
+check_cancel
+year="${yearsInTest[$selectedYear - 1]}"
+
+result=$("$appPath"/backend/display_students_with_max_tries.sh "$subject" "$year" "$filePath")
 
 resultStringCount=$(echo "$result" | wc -l)
+
 if [[ $resultStringCount -eq 1 ]]; then
     dialog --title "Студент давший наибольшее общее количество правильных ответов" \
         --msgbox "\n$result" "$HEIGHT" "$WIDTH"
 else
     dialog --title "Студенты давшие наибольшее общее количество правильных ответов" \
         --msgbox "\n$result" "$HEIGHT" "$WIDTH"
-    
 fi
