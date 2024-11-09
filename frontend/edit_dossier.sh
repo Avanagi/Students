@@ -38,11 +38,12 @@ while true; do
     fi
 
     result=$("$appPath"/backend/display_dossier.sh "$studentName" "$filePath")
+    
 
     case $? in
     1)
         dialog --title "Ошибка" \
-            --msgbox "$oldDossier" \
+            --msgbox "$result" \
             "$HEIGHT" "$WIDTH"
         ;;
     0)

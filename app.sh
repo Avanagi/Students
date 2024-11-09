@@ -18,7 +18,7 @@ DIRECTORY_FILE="frontend/directory.txt"
 # Проверяем наличие файла с сохраненной директорией
 if [ ! -e "$DIRECTORY_FILE" ] || [ "$1" == "-r" ]; then
     # Если файла нет или передан флаг "-r", показываем диалог
-    selectedDir=$(dialog --title "Выберите директорию, в которой распологаются файлы " --dselect "$HOME" "$HEIGHT" "$WIDTH" 3>&1 1>&2 2>&3)
+    selectedDir=$(dialog --no-cancel --title "Выберите директорию, в которой распологаются файлы " --dselect "$HOME" "$HEIGHT" "$WIDTH" 3>&1 1>&2 2>&3)
 
     # Проверяем, была ли выбрана директория
     if [ -n "$selectedDir" ]; then
@@ -44,7 +44,7 @@ while [ ! "$choice" = $EXIT_CONST ]; do
 
     case "$choice" in
     1)
-        "$SCRIPTPATH"/frontend/first.sh "$SCRIPTPATH" $HEIGHT $WIDTH "$selectedDir"
+        "$SCRIPTPATH"/frontend/sorted_group_by_attemts.sh "$SCRIPTPATH" $HEIGHT $WIDTH "$selectedDir"
         ;;
     2)
         "$SCRIPTPATH"/frontend/best_attidance.sh "$SCRIPTPATH" $HEIGHT $WIDTH "$selectedDir"
