@@ -21,7 +21,7 @@ fi
 
 # студент и количество посещенных им занятий
 source=$(cat "$filePath")
-# список студентов 
+# список студентов
 listStudents=""
 maxCount=-1
 while IFS= read -r line; do
@@ -29,21 +29,21 @@ while IFS= read -r line; do
     count=$(echo "$line" | grep -o + | wc -l)
     # удаляем из строки подстроку с посещаемостью
     name=$(echo "$line" | sed -E 's/^(.*) [_+]*$/\1 /')
-    # создаем новую строку с именем и количеством посещений 
+    # создаем новую строку с именем и количеством посещений
     listStudents+="$name"
     listStudents+="$count"
     listStudents+=$'\n'
-    # провеяем, является ли количество посещений максимальным 
-    if (( count > maxCount )); then
+    # провеяем, является ли количество посещений максимальным
+    if ((count > maxCount)); then
         maxCount=$count
     fi
-done <<< "$source"
+done <<<"$source"
 
 # оставляем строки в которых содержится максимальное количество посещений
-result=$(echo "$listStudents" | grep "$maxCount" )
-# выводим результат 
+result=$(echo "$listStudents" | grep "$maxCount")
+# выводим результат
 
-if [[ $result -eq 0 ]]; then
+if [[ $count -eq -0 ]]; then
     result="Студенты отсутствуют"
 fi
 
