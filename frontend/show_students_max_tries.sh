@@ -35,7 +35,7 @@ selectedYear=$(dialog --title "Выберите год" --menu "Выберите
 check_cancel
 year="${yearsInTest[$selectedYear - 1]}"
 
-result=$("$appPath"/backend/display_students_with_max_tries.sh "$subject" "$year" "$filePath")
+result=$("$appPath"/backend/find_students_with_max_tries.sh "$subject" "$year" "$filePath")
 
 case $? in
 1)

@@ -38,7 +38,7 @@ while true; do
     check_cancel
     group="${groupsFiles[$selectedGroup - 1]}"
 
-    result=$("$appPath"/backend/show_best_attendance.sh "$group" "$subject" "$filePath")
+    result=$("$appPath"/backend/find_best_attendance.sh "$group" "$subject" "$filePath")
 
     dialog --title "Результат" \
         --ok-label "Повторить" \

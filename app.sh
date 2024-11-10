@@ -44,10 +44,10 @@ while [ ! "$choice" = $EXIT_CONST ]; do
 
     case "$choice" in
     1)
-        "$SCRIPTPATH"/frontend/sorted_group_by_attemts.sh "$SCRIPTPATH" $HEIGHT $WIDTH "$selectedDir"
+        "$SCRIPTPATH"/frontend/show_sorted_group_by_attempts.sh "$SCRIPTPATH" $HEIGHT $WIDTH "$selectedDir"
         ;;
     2)
-        "$SCRIPTPATH"/frontend/best_attidance.sh "$SCRIPTPATH" $HEIGHT $WIDTH "$selectedDir"
+        "$SCRIPTPATH"/frontend/show_best_attidance.sh "$SCRIPTPATH" $HEIGHT $WIDTH "$selectedDir"
         ;;
     3)
         "$SCRIPTPATH"/frontend/show_dossier.sh "$SCRIPTPATH" $HEIGHT $WIDTH "$selectedDir"
@@ -56,7 +56,7 @@ while [ ! "$choice" = $EXIT_CONST ]; do
         "$SCRIPTPATH"/frontend/edit_dossier.sh "$SCRIPTPATH" $HEIGHT $WIDTH "$selectedDir"
         ;;
     5)
-        "$SCRIPTPATH"/frontend/max_tries.sh "$SCRIPTPATH" $HEIGHT $WIDTH "$selectedDir"
+        "$SCRIPTPATH"/frontend/show_students_max_tries.sh "$SCRIPTPATH" $HEIGHT $WIDTH "$selectedDir"
         ;;
     esac
 done

@@ -55,7 +55,7 @@ check_cancel
 
 group="${testGroups[$selectedGroup - 1]}"
 
-result=$("$appPath"/backend/sorted_group_by_attemts.sh "$group" "$test" "$subject" "$filePath")
+result=$("$appPath"/backend/sorted_group_by_attempts.sh "$group" "$test" "$subject" "$filePath")
 
 dialog --title "Результат" \
     --msgbox "$result" "$HEIGHT" "$WIDTH"

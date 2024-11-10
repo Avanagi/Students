@@ -37,7 +37,7 @@ while true; do
         continue
     fi
 
-    result=$("$appPath"/backend/display_dossier.sh "$studentDossier" "$filePath")
+    result=$("$appPath"/backend/find_dossier.sh "$studentDossier" "$filePath")
     case $? in
     1)
         dialog --title "Ошибка" \

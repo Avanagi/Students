@@ -37,7 +37,7 @@ while true; do
         continue
     fi
 
-    result=$("$appPath"/backend/display_dossier.sh "$studentName" "$filePath")
+    result=$("$appPath"/backend/find_dossier.sh "$studentName" "$filePath")
     
 
     case $? in
@@ -62,12 +62,12 @@ while true; do
         check_cancel
 
         # удаление специальных симоволов
-        cleanedNewDossier=$(echo "$newDossier" | sed -E 's/[^[:alnum:][:space:].,:;!?]//g')
+        cleanedNewDossier=$(echo "$newDossier" | sed -E 's/[^[:alnum:][:space:].,:;!?[]()-//g')   
 
-        "$appPath"/backend/edit_dossier.sh "$studentName" "$cleanedNewDossier" "$filePath"
+        "$appPath"/backend/edit_dossier.sh "$studentName" "$cleanedNewDossier" "$filePath" "$appPath"
 
         # вывод обновленного досье
-        result=$("$appPath"/backend/display_dossier.sh "$studentName" "$filePath")
+        result=$("$appPath"/backend/find_dossier.sh "$studentName" "$filePath")
         updatedDossier=$(echo "$result" | grep "^dossier:" | sed -E 's/^dossier: (.*)$/\1/')
 
         dialog --title "Обновленное досье студента $studentFullName" \
