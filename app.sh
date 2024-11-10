@@ -16,7 +16,7 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 DIRECTORY_FILE="frontend/directory.txt"
 
 # Проверяем наличие файла с сохраненной директорией
-if [ ! -e "$DIRECTORY_FILE" ] || [ "$1" == "-r" ]; then
+if [ ! -e "$DIRECTORY_FILE" ] || [ "$1" == "-r" ] || [ ! -d "$(cat "$DIRECTORY_FILE")" ]; then
     # Если файла нет или передан флаг "-r", показываем диалог
     selectedDir=$(dialog --no-cancel --title "Выберите директорию, в которой распологаются файлы " --dselect "$HOME" "$HEIGHT" "$WIDTH" 3>&1 1>&2 2>&3)
 
